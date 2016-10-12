@@ -15,14 +15,17 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *titles;
+@property (nonatomic, strong) NSArray<BQGift *> *gifts;
+@property (nonatomic, strong) NSArray<BQGift *> *remoteGifts;
+
 @end
 
 @implementation ViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    self.titles = [NSArray arrayWithObjects:@"直播",@"获取礼物列表",@"下载包", nil];
-
+    self.titles = [NSArray arrayWithObjects:@"直播(内置)",@"第一步：获取礼物列表",@"第二步：下载包", nil];
+    [BQGiftManager defaultManager];
     return self;
 }
 
@@ -47,6 +50,24 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self loadDataFromLocal];
+}
+
+- (void)loadDataFromLocal {
+    __weak ViewController *weakSelf = self;
+    [[BQGiftManager defaultManager] getAllGiftsFromLocal:^(NSArray<BQGift *> * _Nullable gifts) {
+        __strong ViewController *strong = weakSelf;
+        if (strong) {
+            strong.gifts = gifts;
+            [strong.tableView reloadData];
+        }
+    } fail:^(NSError * _Nonnull error) {
+        NSLog(@"本地数据库打开失败 %@", error);
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -61,7 +82,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.titles.count;
+    return self.titles.count + self.gifts.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -75,21 +96,85 @@
         cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:reuseIdentifier];
     }
     cell.textLabel.textColor = [UIColor blackColor];
-    cell.textLabel.text = self.titles[indexPath.row];
+    if (indexPath.row < self.titles.count) {
+        cell.textLabel.textColor = [UIColor blueColor];
+        cell.textLabel.text = self.titles[indexPath.row];
+    } else {
+        NSUInteger index = indexPath.row - self.titles.count;
+        if (index < self.gifts.count) {
+            cell.textLabel.textColor = [UIColor blackColor];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@(已下载，侧滑编辑)", self.gifts[index].name];
+        }
+    }
+
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < self.titles.count) {
+        return false;
+    }
+    return true;
+}
+
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < self.titles.count) {
+        return nil;
+    }
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        if (indexPath.row >= self.titles.count) {
+            NSUInteger index = indexPath.row - self.titles.count;
+            if (index < self.gifts.count) {
+                BQGift *gift = self.gifts[index];
+                NSMutableArray *array = [NSMutableArray arrayWithArray:self.gifts];
+                [array removeObjectAtIndex:index];
+                self.gifts = array.copy;
+                [self.tableView reloadData];
+                [[BQGiftManager defaultManager] deleteGift:gift finish:^(NSError * _Nullable error) {
+                }];
+            }
+        }
+    }];
+    return @[action];
+}
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
         LiveViewController *vc = [[LiveViewController alloc] init];
+        vc.giftPath = [[NSBundle mainBundle] resourcePath];
         [self.navigationController pushViewController:vc animated:true];
     }else if (indexPath.row == 1) {
-        [[BQGiftManager defaultManager] getAllGiftsFromServer];
+        __weak ViewController *weakSelf = self;
+        [[BQGiftManager defaultManager] getAllGiftsFromServer:^(NSArray<BQGift *> * _Nullable gifts) {
+            __strong ViewController *strong = weakSelf;
+            if (strong) {
+                strong.remoteGifts = gifts;
+            }
+        } fail:^(NSError * _Nonnull error) {
+            __strong ViewController *strong = weakSelf;
+            if (strong) {
+                NSLog(@"get gifts list fail");
+            }
+        }];
     }else if (indexPath.row == 2) {
-        [[BQGiftManager defaultManager] downloadGifts];
+        __weak ViewController *weakSelf = self;
+        [[BQGiftManager defaultManager] downloadGifts:self.remoteGifts finish:^(NSArray<BQGift *> * _Nullable failGifts) {
+            __strong ViewController *strong = weakSelf;
+            if (strong) {
+                NSLog(@"download gifts %u , %u fail", strong.remoteGifts.count, failGifts.count);
+                [strong loadDataFromLocal];
+            }
+        }];
+    }else {
+        NSUInteger index = indexPath.row - self.titles.count;
+        if (index < self.gifts.count) {
+            BQGift *gift = self.gifts[index];
+            LiveViewController *vc = [[LiveViewController alloc] init];
+            vc.giftPath = [[BQGiftManager defaultManager] pathForGift:gift];
+            [self.navigationController pushViewController:vc animated:true];
+        }
     }
 
 }

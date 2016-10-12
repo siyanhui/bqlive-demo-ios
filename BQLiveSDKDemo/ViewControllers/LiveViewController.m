@@ -111,9 +111,9 @@
 
     
     //第一步：资源文件路径准备
-    NSString *giftPath = [[NSBundle mainBundle] resourcePath];
+    
     //第二步：配置文件读取
-    BQLAnimatedImageConfig *config = [[BQLAnimatedImageConfig alloc] initWithDictionyPath:giftPath];
+    BQLAnimatedImageConfig *config = [[BQLAnimatedImageConfig alloc] initWithDictionyPath:self.giftPath];
 
     //第三步：实例化 BQLAnimatedImage 对象
     BQLAnimatedImage *animatedImage = [BQLAnimatedImage animatedImageWithConfig:config dataSource:self];

@@ -11,4 +11,6 @@
 
 @interface LiveViewController : UIViewController
 
+@property (nonatomic, strong) NSString *giftPath;
+
 @end
