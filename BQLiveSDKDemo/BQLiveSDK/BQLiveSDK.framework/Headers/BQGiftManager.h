@@ -20,6 +20,11 @@ typedef void (^BQ_GiftDeleteFinish)(NSError * _Nullable error);
 + (nonnull BQGiftManager *) defaultManager;
 
 /**
+ 传入用户的信息用于记录礼物的下载更新情况
+ */
+- (void)setUserId:(nonnull NSString *)userId userName:(nonnull NSString *)userName;
+
+/**
  从服务器获取所有礼物列表
  */
 - (void)getAllGiftsFromServer: (nullable BQ_GetAllGiftsSuccess)success fail: (nullable BQ_GetAllGiftsFail)fail;
@@ -44,7 +49,7 @@ typedef void (^BQ_GiftDeleteFinish)(NSError * _Nullable error);
 
  @param gift 要删除的gift
  */
-- (void)deleteGift:(nonnull BQGift *)gift finish:(BQ_GiftDeleteFinish)finish;
+- (void)deleteGift:(nonnull BQGift *)gift finish:(nullable BQ_GiftDeleteFinish)finish;
 
 
 /**

@@ -19,7 +19,6 @@
 @property (strong, nonatomic) UIButton *switchButton;
 @property (strong, nonatomic) UIButton *sendGiftButton;
 @property(strong, nonatomic) BQLAnimatedImageView *imageView;
-
 @end
 
 @implementation LiveViewController
@@ -109,7 +108,8 @@
     _sendGiftButton.hidden = YES;
     [self.view bringSubviewToFront:_backButton];
 
-    
+    //BQLiveSDK集成
+    //礼物播放
     //第一步：资源文件路径准备
     
     //第二步：配置文件读取
@@ -136,9 +136,12 @@
     imageView.animatedImage = animatedImage;
 
     //第五步：记录发送礼物的log
-    [BQLiveManager userId:@"3" userName:@"" sendGiftId:config.giftGuid giftName:@"" toHostId:@"" hostName:@""];
+    [BQLiveManager logSendGiftWithUserId:@"2" userName:@"2" giftId:config.giftGuid
+                                giftName:@"test" toHostId:@"host_id" hostName:@"host_name"];
+
     //记录礼物展示的log
-    [BQLiveManager userId:@"3" userName:@"" viewGiftId:config.giftGuid giftName:@"" toHostId:@"" hostName:@""];
+    [BQLiveManager logViewGiftWithUserId:@"2" userName:@"2" giftId:config.giftGuid
+                                giftName:@"test" toHostId:@"host_id" hostName:@"host_name"];
 }
 
 /* camera button methods */

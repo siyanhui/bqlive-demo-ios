@@ -25,7 +25,8 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     self.titles = [NSArray arrayWithObjects:@"直播(内置)",@"第一步：获取礼物列表",@"第二步：下载包", nil];
-    [BQGiftManager defaultManager];
+    //BQLiveSDK集成
+    [[BQGiftManager defaultManager] setUserId:@"userId" userName:@"userName"];
     return self;
 }
 
@@ -57,6 +58,7 @@
 
 - (void)loadDataFromLocal {
     __weak ViewController *weakSelf = self;
+    //BQLiveSDK集成
     [[BQGiftManager defaultManager] getAllGiftsFromLocal:^(NSArray<BQGift *> * _Nullable gifts) {
         __strong ViewController *strong = weakSelf;
         if (strong) {
@@ -130,6 +132,7 @@
                 [array removeObjectAtIndex:index];
                 self.gifts = array.copy;
                 [self.tableView reloadData];
+                //BQLiveSDK集成
                 [[BQGiftManager defaultManager] deleteGift:gift finish:^(NSError * _Nullable error) {
                 }];
             }
@@ -160,6 +163,7 @@
         }];
     }else if (indexPath.row == 2) {
         __weak ViewController *weakSelf = self;
+        //BQLiveSDK集成
         [[BQGiftManager defaultManager] downloadGifts:self.remoteGifts finish:^(NSArray<BQGift *> * _Nullable failGifts) {
             __strong ViewController *strong = weakSelf;
             if (strong) {
@@ -171,6 +175,7 @@
         NSUInteger index = indexPath.row - self.titles.count;
         if (index < self.gifts.count) {
             BQGift *gift = self.gifts[index];
+            //BQLiveSDK集成
             LiveViewController *vc = [[LiveViewController alloc] init];
             vc.giftPath = [[BQGiftManager defaultManager] pathForGift:gift];
             [self.navigationController pushViewController:vc animated:true];

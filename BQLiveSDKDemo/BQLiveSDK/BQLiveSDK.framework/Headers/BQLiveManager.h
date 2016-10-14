@@ -39,38 +39,7 @@
  */
 - (void)setAppkey:(nonnull NSString *)appkey platformId:(nonnull NSString *)platformId;
 
-/**
- *  礼物发送事件统计
- *  @param userId 观众的ID
- *  @param giftId 礼物ID
- *  @param hostId 主播的ID
- */
-+ (void)userId:(nonnull NSString *)userId userName:(nullable NSString *)userName sendGiftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
-
-/**
- *  礼物播放事件统计
- *  @param userId 观众的ID
- *  @param giftId 礼物ID
- *  @param hostId 主播的ID
- */
-+ (void)userId:(nonnull NSString *)userId userName:(nullable NSString *)userName viewGiftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
-
-/**
- 首次下载礼物事件统计
-
- @param userId 登录用户id
- @param giftId 下载的礼物的id
- */
-+ (void)userId:(nonnull NSString *)userId userName:(nullable NSString *)userName downloadGiftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName;
-
-/**
- 更新礼物事件统计
-
- @param userId 登录用户id
- @param giftId 更新的礼物的id
- */
-+ (void)userId:(nonnull NSString *)userId userName:(nullable NSString *)userName updateGiftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName;
-
+#pragma mark - Decode Gift Resource
 /**
  *  解码礼物动画的配置文件
  *  @param data 配置文件的内容
@@ -83,6 +52,51 @@
  *  @param toPath 转存的路径
  */
 + (void)decodeGiftResourceWithPath:(nonnull NSString *)path toPath:(nonnull NSString *)toPath error:( NSError * _Nullable * _Nullable)error;
+
+
+#pragma mark - Log Event
+
+/**
+ *  礼物发送事件统计
+ *  @param userId 观众的ID
+ *  @param userName 观众昵称
+ *  @param giftId 礼物ID
+ *  @param giftName 礼物名称
+ *  @param hostId 主播的ID
+ *  @param hostName 主播昵称
+ */
++ (void)logSendGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
+
+/**
+ *  礼物播放事件统计
+ *  @param userId 观众的ID
+ *  @param userName 观众昵称
+ *  @param giftId 礼物ID
+ *  @param giftName 礼物名称
+ *  @param hostId 主播的ID
+ *  @param hostName 主播昵称
+ */
++ (void)logViewGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
+
+/**
+ 首次下载礼物事件统计
+ *  @param userId 观众的ID
+ *  @param userName 观众昵称
+ *  @param giftId 礼物ID
+ *  @param giftName 礼物名称
+ */
++ (void)logDownloadGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName;
+
+/**
+ 更新礼物事件统计
+ *  @param userId 观众的ID
+ *  @param userName 观众昵称
+ *  @param giftId 礼物ID
+ *  @param giftName 礼物名称
+ */
++ (void)logUpdateGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName;
+
+
 @end
 
 
