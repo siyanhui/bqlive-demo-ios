@@ -167,7 +167,7 @@
         [[BQGiftManager defaultManager] downloadGifts:self.remoteGifts finish:^(NSArray<BQGift *> * _Nullable failGifts) {
             __strong ViewController *strong = weakSelf;
             if (strong) {
-                NSLog(@"download gifts %u , %u fail", strong.remoteGifts.count, failGifts.count);
+                NSLog(@"download gifts %lu , %lu fail", (unsigned long)strong.remoteGifts.count, (unsigned long)failGifts.count);
                 [strong loadDataFromLocal];
             }
         }];
@@ -178,6 +178,7 @@
             //BQLiveSDK集成
             LiveViewController *vc = [[LiveViewController alloc] init];
             vc.giftPath = [[BQGiftManager defaultManager] pathForGift:gift];
+            vc.gift = gift;
             [self.navigationController pushViewController:vc animated:true];
         }
     }

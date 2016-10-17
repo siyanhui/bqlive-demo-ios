@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "LLSimpleCamera.h"
+#import <BQLiveSDK/BQLiveSDK.h>
 
 @interface LiveViewController : UIViewController
 
 @property (nonatomic, strong) NSString *giftPath;
+
+@property (nonatomic, strong) BQGift *gift;
 
 @end

@@ -135,13 +135,15 @@
     }];
     imageView.animatedImage = animatedImage;
 
-    //第五步：记录发送礼物的log
-    [BQLiveManager logSendGiftWithUserId:@"2" userName:@"2" giftId:config.giftGuid
-                                giftName:@"test" toHostId:@"host_id" hostName:@"host_name"];
+    if (_gift) {
+        //第五步：记录发送礼物的log
+        [BQLiveManager logSendGiftWithUserId:@"user_id" userName:@"user_name" giftId:_gift.guid
+                                    giftName:_gift.name toHostId:@"host_id" hostName:@"host_name"];
 
-    //记录礼物展示的log
-    [BQLiveManager logViewGiftWithUserId:@"2" userName:@"2" giftId:config.giftGuid
-                                giftName:@"test" toHostId:@"host_id" hostName:@"host_name"];
+        //记录礼物展示的log
+        [BQLiveManager logViewGiftWithUserId:@"user_id" userName:@"user_name" giftId:_gift.guid
+                                    giftName:_gift.name toHostId:@"host_id" hostName:@"host_name"];
+    }
 }
 
 /* camera button methods */
