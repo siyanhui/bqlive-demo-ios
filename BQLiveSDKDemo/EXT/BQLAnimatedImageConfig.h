@@ -59,7 +59,6 @@ typedef struct BQLGiftFrameConfig BQLGiftFrameConfig;
 @property (nonatomic, assign, readonly) CGFloat height;
 @property (nonatomic, assign, readonly) BOOL isStatic;
 
-@property (nonnull, nonatomic, strong, readonly) NSString *giftGuid;
 @property (nonatomic, assign, readonly) BOOL needHostAvatar;
 @property (nonatomic, assign, readonly) BOOL needHostNickname;
 @property (nonatomic, assign, readonly) BOOL needSenderAvatar;

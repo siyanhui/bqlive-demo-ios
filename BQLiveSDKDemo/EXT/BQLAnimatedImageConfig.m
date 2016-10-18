@@ -41,7 +41,6 @@
         NSString *configPath = [path stringByAppendingPathComponent:@"config.txt"];
         NSData *data = [NSData dataWithContentsOfFile:configPath];
         self.dic = [BQLiveManager decodeConfigWithData:data];
-        _giftGuid = [self.dic objectForKey:@"guid"];
         _needHostAvatar = [self.dic objectForKey:@"hostAvatar"] != nil;
         _needHostNickname = [self.dic objectForKey:@"hostNickName"] != nil;
         _needSenderAvatar = [self.dic objectForKey:@"senderAvatar"] != nil;
