@@ -153,8 +153,19 @@
         //记录礼物展示的log
         [BQLiveManager logViewGiftWithUserId:@"user_id" userName:@"user_name" giftId:_gift.guid
                                     giftName:_gift.name giftPrice:_gift.price toHostId:@"host_id" hostName:@"host_name"];
+    }else {
+
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        [imageView mas_makeConstraints:^(SM_MASConstraintMaker *make) {
+            make.top.equalTo(self.mas_topLayoutGuide);
+            make.bottom.equalTo(self.mas_bottomLayoutGuide);
+            make.left.equalTo(self.view.mas_left);
+            make.right.equalTo(self.view.mas_right);
+        }];
+        imageView.animatedImage = animatedImage;
     }
-    
+
+
 }
 
 /* camera button methods */

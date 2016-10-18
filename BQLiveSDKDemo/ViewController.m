@@ -15,9 +15,9 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *titles;
-@property (nonatomic, strong) NSArray<BQGift *> *gifts;
 @property (nonatomic, strong) NSArray<BQGift *> *remoteGifts;
-
+@property (nonatomic, strong) NSArray<BQGift *> *localGifts;
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 @end
 
 @implementation ViewController
@@ -47,7 +47,17 @@
         make.width.equalTo(self.view.mas_width);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-    
+
+    self.indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
+    self.indicatorView.frame = CGRectMake(0, 0, 120, 120);
+    [self.view addSubview:self.indicatorView];
+    [self.indicatorView mas_makeConstraints:^(SM_MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(self.view.mas_centerY);
+        make.width.equalTo(@(120));
+        make.height.equalTo(@120);
+    }];
+    self.indicatorView.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,7 +70,7 @@
     [[BQGiftManager defaultManager] getAllGiftsFromLocal:^(NSArray<BQGift *> * _Nullable gifts) {
         __strong ViewController *strong = weakSelf;
         if (strong) {
-            strong.gifts = gifts;
+            strong.localGifts = gifts;
             [strong.tableView reloadData];
         }
     } fail:^(NSError * _Nonnull error) {
@@ -82,7 +92,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.titles.count + self.gifts.count;
+    return self.titles.count + self.localGifts.count + self.remoteGifts.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -100,29 +110,50 @@
         cell.textLabel.textColor = [UIColor blueColor];
         cell.textLabel.text = self.titles[indexPath.row];
     } else {
+        BQGift *gift = nil;
         NSUInteger index = indexPath.row - self.titles.count;
-        if (index < self.gifts.count) {
-            BQGift *gift = self.gifts[index];
+        if (index < self.localGifts.count) {
+            gift = self.localGifts[index];
             cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.text = [NSString stringWithFormat:@"%@(已下载，侧滑编辑)", gift.name];
-            NSURL *thunbUrl = [NSURL URLWithString:[gift.thumb stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            if (thunbUrl) {
-                //                [cell.imageView sm_setImageWithURL:thunbUrl];
-                NSData *data = [NSData dataWithContentsOfURL:thunbUrl];
-                UIImage *image = [UIImage imageWithData:data];
-                [cell.imageView setImage:image];
+        }else {
+            index = index - self.localGifts.count;
+            if (index < self.remoteGifts.count) {
+                gift = self.remoteGifts[index];
+                cell.textLabel.textColor = [UIColor blackColor];
+                cell.textLabel.text = [NSString stringWithFormat:@"%@(未下载)", gift.name];
             }
         }
+
+        if (gift) {
+            NSURL *thunbUrl = [NSURL URLWithString:[gift.thumb stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            if (thunbUrl) {
+                cell.imageView.image = [UIImage imageNamed:@"icon.png"];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSData *data = [NSData dataWithContentsOfURL:thunbUrl];
+                    UIImage *image = [UIImage imageWithData:data];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [cell.imageView setImage:image];
+                        [cell setNeedsDisplay];
+                    });
+                });
+            }
+        }
+
     }
-    
+
     return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < self.titles.count) {
-        return false;
+        return NO;
     }
-    return true;
+    NSUInteger index = indexPath.row - self.titles.count;
+    if (index < self.localGifts.count) {
+        return YES;
+    }
+    return NO;
 }
 
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -132,11 +163,11 @@
     UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         if (indexPath.row >= self.titles.count) {
             NSUInteger index = indexPath.row - self.titles.count;
-            if (index < self.gifts.count) {
-                BQGift *gift = self.gifts[index];
-                NSMutableArray *array = [NSMutableArray arrayWithArray:self.gifts];
+            if (index < self.localGifts.count) {
+                BQGift *gift = self.localGifts[index];
+                NSMutableArray *array = [NSMutableArray arrayWithArray:self.localGifts];
                 [array removeObjectAtIndex:index];
-                self.gifts = array.copy;
+                self.localGifts = array.copy;
                 [self.tableView reloadData];
                 [[BQGiftManager defaultManager] deleteGift:gift finish:^(NSError * _Nullable error) {
                 }];
@@ -155,10 +186,32 @@
         [self.navigationController pushViewController:vc animated:true];
     }else if (indexPath.row == 1) {
         __weak ViewController *weakSelf = self;
+        self.indicatorView.hidden = NO;
+        [self.indicatorView startAnimating];
         [[BQGiftManager defaultManager] getAllGiftsFromServer:^(NSArray<BQGift *> * _Nullable gifts) {
             __strong ViewController *strong = weakSelf;
             if (strong) {
-                strong.remoteGifts = gifts;
+                [strong.indicatorView stopAnimating];
+                strong.indicatorView.hidden = YES;
+                if (strong.localGifts.count > 0) {
+                    NSMutableArray *remotes = [[NSMutableArray alloc] init];
+                    for (BQGift *gift in gifts) {
+                        BOOL hasDownloaded = NO;
+                        for (BQGift *lGift in strong.localGifts) {
+                            if ([lGift.guid isEqualToString:gift.guid]) {
+                                hasDownloaded = YES;
+                                break;
+                            }
+                        }
+                        if (!hasDownloaded) {
+                            [remotes addObject:gift];
+                        }
+                    }
+                    strong.remoteGifts = remotes;
+                } else {
+                    strong.remoteGifts = gifts;
+                }
+                [strong.tableView reloadData];
             }
         } fail:^(NSError * _Nonnull error) {
             __strong ViewController *strong = weakSelf;
@@ -168,17 +221,22 @@
         }];
     }else if (indexPath.row == 2) {
         __weak ViewController *weakSelf = self;
+        self.indicatorView.hidden = NO;
+        [self.indicatorView startAnimating];
         [[BQGiftManager defaultManager] downloadGifts:self.remoteGifts finish:^(NSArray<BQGift *> * _Nullable failGifts) {
             __strong ViewController *strong = weakSelf;
             if (strong) {
+                [strong.indicatorView stopAnimating];
+                strong.indicatorView.hidden = YES;
+                strong.remoteGifts = [NSArray array];
                 NSLog(@"download gifts %lu , %lu fail", (unsigned long)strong.remoteGifts.count, (unsigned long)failGifts.count);
                 [strong loadDataFromLocal];
             }
         }];
     }else {
         NSUInteger index = indexPath.row - self.titles.count;
-        if (index < self.gifts.count) {
-            BQGift *gift = self.gifts[index];
+        if (index < self.localGifts.count) {
+            BQGift *gift = self.localGifts[index];
             LiveViewController *vc = [[LiveViewController alloc] init];
             vc.giftPath = [[BQGiftManager defaultManager] pathForGift:gift];
             vc.gift = gift;

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44048DD41DB6245600B767C0 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 44048DD31DB6245600B767C0 /* icon.png */; };
 		44126E7C1D9CC4F000323D74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44126E7B1D9CC4F000323D74 /* main.m */; };
 		44126E7F1D9CC4F000323D74 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44126E7E1D9CC4F000323D74 /* AppDelegate.m */; };
 		44126E821D9CC4F000323D74 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44126E811D9CC4F000323D74 /* ViewController.m */; };
@@ -426,6 +427,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44048DD31DB6245600B767C0 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		44126E771D9CC4F000323D74 /* BQLiveSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BQLiveSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44126E7B1D9CC4F000323D74 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		44126E7D1D9CC4F000323D74 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1024,6 +1026,7 @@
 				441272471D9CC82100323D74 /* gift */,
 				441273CB1D9CC82200323D74 /* hostAvatar.jpg */,
 				441273CC1D9CC82200323D74 /* senderAvatar.jpg */,
+				44048DD31DB6245600B767C0 /* icon.png */,
 			);
 			path = Res;
 			sourceTree = "<group>";
@@ -1864,6 +1867,7 @@
 				441273E11D9CC82200323D74 /* 107-a.jpg in Resources */,
 				441274221D9CC82200323D74 /* 136-b.jpg in Resources */,
 				4412746B1D9CC82200323D74 /* 17-a.jpg in Resources */,
+				44048DD41DB6245600B767C0 /* icon.png in Resources */,
 				44126E851D9CC4F000323D74 /* Main.storyboard in Resources */,
 				441274231D9CC82200323D74 /* 137-a.jpg in Resources */,
 				441273E81D9CC82200323D74 /* 11-b.jpg in Resources */,
