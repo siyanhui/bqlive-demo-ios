@@ -19,6 +19,7 @@
 @property (strong, nonatomic) UIButton *switchButton;
 @property (strong, nonatomic) UIButton *sendGiftButton;
 @property(strong, nonatomic) BQLAnimatedImageView *imageView;
+
 @end
 
 @implementation LiveViewController
@@ -26,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.view.backgroundColor = [UIColor blackColor];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
@@ -46,7 +47,7 @@
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
     }];
-
+    
     
     if([LLSimpleCamera isFrontCameraAvailable] && [LLSimpleCamera isRearCameraAvailable]) {
         // button to toggle camera positions
@@ -107,43 +108,53 @@
 - (void)sendGift {
     _sendGiftButton.hidden = YES;
     [self.view bringSubviewToFront:_backButton];
-
-    //BQLiveSDK集成
-    //礼物播放
+    
+    
     //第一步：资源文件路径准备
     
     //第二步：配置文件读取
     BQLAnimatedImageConfig *config = [[BQLAnimatedImageConfig alloc] initWithDictionyPath:self.giftPath];
-
+    
     //第三步：实例化 BQLAnimatedImage 对象
     BQLAnimatedImage *animatedImage = [BQLAnimatedImage animatedImageWithConfig:config dataSource:self];
     animatedImage.loopCount = 1;
-
+    
     //第四步：实例化控件并播放
     BQLAnimatedImageView *imageView = [[BQLAnimatedImageView alloc] init];
     imageView.delegate = self;
     imageView.alpha = 1;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:imageView];
     self.imageView = imageView;
-    [imageView mas_makeConstraints:^(SM_MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.bottom.equalTo(self.mas_bottomLayoutGuide);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
-    }];
-    imageView.animatedImage = animatedImage;
-
+    
     if (_gift) {
+        if (_gift.fullScreen) {
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            [imageView mas_makeConstraints:^(SM_MASConstraintMaker *make) {
+                make.top.equalTo(self.mas_topLayoutGuide);
+                make.bottom.equalTo(self.mas_bottomLayoutGuide);
+                make.left.equalTo(self.view.mas_left);
+                make.right.equalTo(self.view.mas_right);
+            }];
+            imageView.animatedImage = animatedImage;
+        }else{
+            imageView.contentMode = UIViewContentModeCenter;
+            [imageView mas_makeConstraints:^(SM_MASConstraintMaker *make) {
+                make.centerX.equalTo(self.view.mas_centerX);
+                make.centerY.equalTo(self.view.mas_centerY);
+            }];
+            imageView.animatedImage = animatedImage;
+        }
+        
         //第五步：记录发送礼物的log
         [BQLiveManager logSendGiftWithUserId:@"user_id" userName:@"user_name" giftId:_gift.guid
-                                    giftName:_gift.name toHostId:@"host_id" hostName:@"host_name"];
-
+                                    giftName:_gift.name giftPrice:_gift.price toHostId:@"host_id" hostName:@"host_name"];
+        
         //记录礼物展示的log
         [BQLiveManager logViewGiftWithUserId:@"user_id" userName:@"user_name" giftId:_gift.guid
-                                    giftName:_gift.name toHostId:@"host_id" hostName:@"host_name"];
+                                    giftName:_gift.name giftPrice:_gift.price toHostId:@"host_id" hostName:@"host_name"];
     }
+    
 }
 
 /* camera button methods */

@@ -25,14 +25,13 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     self.titles = [NSArray arrayWithObjects:@"直播(内置)",@"第一步：获取礼物列表",@"第二步：下载包", nil];
-    //BQLiveSDK集成
-    [[BQGiftManager defaultManager] setUserId:@"userId" userName:@"userName"];
+    [BQGiftManager defaultManager];
     return self;
 }
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-
+    
 }
 
 - (void)loadView {
@@ -41,14 +40,14 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
-
+    
     [self.tableView mas_makeConstraints:^(SM_MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top);
         make.left.equalTo(self.view.mas_left);
         make.width.equalTo(self.view.mas_width);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,7 +57,6 @@
 
 - (void)loadDataFromLocal {
     __weak ViewController *weakSelf = self;
-    //BQLiveSDK集成
     [[BQGiftManager defaultManager] getAllGiftsFromLocal:^(NSArray<BQGift *> * _Nullable gifts) {
         __strong ViewController *strong = weakSelf;
         if (strong) {
@@ -72,7 +70,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -104,11 +102,19 @@
     } else {
         NSUInteger index = indexPath.row - self.titles.count;
         if (index < self.gifts.count) {
+            BQGift *gift = self.gifts[index];
             cell.textLabel.textColor = [UIColor blackColor];
-            cell.textLabel.text = [NSString stringWithFormat:@"%@(已下载，侧滑编辑)", self.gifts[index].name];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@(已下载，侧滑编辑)", gift.name];
+            NSURL *thunbUrl = [NSURL URLWithString:[gift.thumb stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            if (thunbUrl) {
+                //                [cell.imageView sm_setImageWithURL:thunbUrl];
+                NSData *data = [NSData dataWithContentsOfURL:thunbUrl];
+                UIImage *image = [UIImage imageWithData:data];
+                [cell.imageView setImage:image];
+            }
         }
     }
-
+    
     return cell;
 }
 
@@ -132,7 +138,6 @@
                 [array removeObjectAtIndex:index];
                 self.gifts = array.copy;
                 [self.tableView reloadData];
-                //BQLiveSDK集成
                 [[BQGiftManager defaultManager] deleteGift:gift finish:^(NSError * _Nullable error) {
                 }];
             }
@@ -163,7 +168,6 @@
         }];
     }else if (indexPath.row == 2) {
         __weak ViewController *weakSelf = self;
-        //BQLiveSDK集成
         [[BQGiftManager defaultManager] downloadGifts:self.remoteGifts finish:^(NSArray<BQGift *> * _Nullable failGifts) {
             __strong ViewController *strong = weakSelf;
             if (strong) {
@@ -175,14 +179,13 @@
         NSUInteger index = indexPath.row - self.titles.count;
         if (index < self.gifts.count) {
             BQGift *gift = self.gifts[index];
-            //BQLiveSDK集成
             LiveViewController *vc = [[LiveViewController alloc] init];
             vc.giftPath = [[BQGiftManager defaultManager] pathForGift:gift];
             vc.gift = gift;
             [self.navigationController pushViewController:vc animated:true];
         }
     }
-
+    
 }
 
 @end

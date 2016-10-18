@@ -62,10 +62,11 @@
  *  @param userName 观众昵称
  *  @param giftId 礼物ID
  *  @param giftName 礼物名称
+ *  @param giftPrice 礼物价格
  *  @param hostId 主播的ID
  *  @param hostName 主播昵称
  */
-+ (void)logSendGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
++ (void)logSendGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName giftPrice:(nullable NSString *)giftPrice toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
 
 /**
  *  礼物播放事件统计
@@ -73,10 +74,11 @@
  *  @param userName 观众昵称
  *  @param giftId 礼物ID
  *  @param giftName 礼物名称
+ *  @param giftPrice 礼物价格
  *  @param hostId 主播的ID
  *  @param hostName 主播昵称
  */
-+ (void)logViewGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
++ (void)logViewGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName giftPrice:(nullable NSString *)giftPrice toHostId:(nonnull NSString *)hostId hostName:(nullable NSString *)hostName;
 
 /**
  首次下载礼物事件统计
@@ -84,8 +86,9 @@
  *  @param userName 观众昵称
  *  @param giftId 礼物ID
  *  @param giftName 礼物名称
+ *  @param giftPrice 礼物价格
  */
-+ (void)logDownloadGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName;
++ (void)logDownloadGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName giftPrice:(nullable NSString *)giftPrice;
 
 /**
  更新礼物事件统计
@@ -93,8 +96,9 @@
  *  @param userName 观众昵称
  *  @param giftId 礼物ID
  *  @param giftName 礼物名称
+ *  @param giftPrice 礼物价格
  */
-+ (void)logUpdateGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName;
++ (void)logUpdateGiftWithUserId:(nonnull NSString *)userId userName:(nullable NSString *)userName giftId:(nonnull NSString *)giftId giftName:(nullable NSString *)giftName giftPrice:(nullable NSString *)giftPrice;
 
 
 @end

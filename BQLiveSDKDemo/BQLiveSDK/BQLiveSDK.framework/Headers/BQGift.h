@@ -48,6 +48,16 @@
  */
 @property(nonatomic, strong) NSString *preview;
 
+/**
+ 礼物是否全屏
+ */
+@property(nonatomic) BOOL fullScreen;
+
+/**
+ 礼物是否是动态的
+ */
+@property(nonatomic) BOOL isAnimated;
+
 
 /**
  礼物动画素材（zip）的URL
