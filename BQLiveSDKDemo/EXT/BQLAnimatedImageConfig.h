@@ -57,6 +57,7 @@ typedef struct BQLGiftFrameConfig BQLGiftFrameConfig;
 @property (nonatomic, assign, readonly) NSUInteger frameCount;
 @property (nonatomic, assign, readonly) CGFloat width;
 @property (nonatomic, assign, readonly) CGFloat height;
+@property (nonatomic, assign, readonly) BOOL isStatic;
 
 @property (nonnull, nonatomic, strong, readonly) NSString *giftGuid;
 @property (nonatomic, assign, readonly) BOOL needHostAvatar;
@@ -64,7 +65,7 @@ typedef struct BQLGiftFrameConfig BQLGiftFrameConfig;
 @property (nonatomic, assign, readonly) BOOL needSenderAvatar;
 @property (nonatomic, assign, readonly) BOOL needSenderNickname;
 
-@property (nullable, nonatomic, assign, readonly) NSArray<NSString *> *subImageKeys;//帧辅图列表
+@property (nullable, nonatomic, strong, readonly) NSArray<NSString *> *subImageKeys;//帧辅图列表
 
 @property (nullable, nonatomic, strong, readonly) BQLImageConfig *hostAvatarConfig;
 @property (nullable, nonatomic, strong, readonly) BQLImageConfig *senderAvatarConfig;

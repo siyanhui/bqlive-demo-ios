@@ -26,7 +26,9 @@
 @property (nonatomic, assign) NSUInteger frameCount;
 @property (nonatomic, assign) CGFloat width;
 @property (nonatomic, assign) CGFloat height;
+@property (nonatomic, strong) NSArray<NSString *> *subImageKeys;
 @property (nonatomic, strong) NSMutableDictionary *subImages;
+@property (nonatomic, assign) BOOL isStatic;
 
 @end
 
@@ -51,6 +53,8 @@
         self.frameCount = [[self.dic objectForKey:@"frame"] integerValue];
         self.width = [[self.dic objectForKey:@"width"] floatValue];
         self.height = [[self.dic objectForKey:@"height"] floatValue];
+        self.isStatic = [[self.dic objectForKey:@"static"] boolValue];
+        self.subImageKeys = [self.dic objectForKey:@"sub"];
         self.subImages = [[NSMutableDictionary alloc] init];
     }
     return self;
@@ -144,7 +148,7 @@
     NSArray *mainArray = [self.dic objectForKey:@"main"];
     NSString *fileName = @"";
     if (mainArray && frame < mainArray.count) {
-        fileName = mainArray[frame];
+        fileName = [NSString stringWithFormat:@"%@", mainArray[frame]];
     }else {
         fileName = [NSString stringWithFormat:@"%lu", (unsigned long)frame];
     }
