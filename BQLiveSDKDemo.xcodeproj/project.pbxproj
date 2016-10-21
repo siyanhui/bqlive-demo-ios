@@ -424,6 +424,7 @@
 		441275501D9CC82300323D74 /* hostAvatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 441273CB1D9CC82200323D74 /* hostAvatar.jpg */; };
 		441275511D9CC82300323D74 /* senderAvatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 441273CC1D9CC82200323D74 /* senderAvatar.jpg */; };
 		449830941DA8952D007150F0 /* BQLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B694541DA8938C00386212 /* BQLiveSDK.framework */; };
+		449E2D4C1DB9BD9B004E3001 /* icon_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 449E2D4B1DB9BD9B004E3001 /* icon_placeholder.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -870,6 +871,7 @@
 		441273CA1D9CC82200323D74 /* config.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.txt; sourceTree = "<group>"; };
 		441273CB1D9CC82200323D74 /* hostAvatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = hostAvatar.jpg; sourceTree = "<group>"; };
 		441273CC1D9CC82200323D74 /* senderAvatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = senderAvatar.jpg; sourceTree = "<group>"; };
+		449E2D4B1DB9BD9B004E3001 /* icon_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_placeholder.png; sourceTree = "<group>"; };
 		44B694541DA8938C00386212 /* BQLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BQLiveSDK.framework; path = BQLiveSDK/BQLiveSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1027,6 +1029,7 @@
 				441273CB1D9CC82200323D74 /* hostAvatar.jpg */,
 				441273CC1D9CC82200323D74 /* senderAvatar.jpg */,
 				44048DD31DB6245600B767C0 /* icon.png */,
+				449E2D4B1DB9BD9B004E3001 /* icon_placeholder.png */,
 			);
 			path = Res;
 			sourceTree = "<group>";
@@ -1560,6 +1563,7 @@
 				441274C51D9CC82200323D74 /* 37-a.jpg in Resources */,
 				4412754B1D9CC82300323D74 /* 98-a.jpg in Resources */,
 				441274941D9CC82200323D74 /* 188-b.jpg in Resources */,
+				449E2D4C1DB9BD9B004E3001 /* icon_placeholder.png in Resources */,
 				441274A01D9CC82200323D74 /* 2-b.jpg in Resources */,
 				4412745F1D9CC82200323D74 /* 164-a.jpg in Resources */,
 				441273DE1D9CC82200323D74 /* 105-b.jpg in Resources */,

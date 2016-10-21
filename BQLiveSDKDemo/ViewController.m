@@ -109,6 +109,7 @@
     if (indexPath.row < self.titles.count) {
         cell.textLabel.textColor = [UIColor blueColor];
         cell.textLabel.text = self.titles[indexPath.row];
+        cell.imageView.image = nil;
     } else {
         BQGift *gift = nil;
         NSUInteger index = indexPath.row - self.titles.count;
@@ -128,7 +129,7 @@
         if (gift) {
             NSURL *thunbUrl = [NSURL URLWithString:[gift.thumb stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             if (thunbUrl) {
-                cell.imageView.image = [UIImage imageNamed:@"icon.png"];
+                cell.imageView.image = [UIImage imageNamed:@"icon_placeholder.png"];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                     NSData *data = [NSData dataWithContentsOfURL:thunbUrl];
                     UIImage *image = [UIImage imageWithData:data];
