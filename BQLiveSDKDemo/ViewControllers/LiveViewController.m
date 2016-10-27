@@ -130,6 +130,14 @@
     if (_gift) {
         if (_gift.fullScreen) {
             imageView.contentMode = UIViewContentModeScaleAspectFill;
+            //礼物偏高的情况下，显示效果底部对齐
+            CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+            CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+            CGFloat offset = 0;
+            if (_gift.height * screenWidth > _gift.width * screenHeight) {
+                offset = 0.5 * (_gift.height * screenWidth / (_gift.width * screenHeight) - 1);
+            }
+            imageView.layer.anchorPoint = CGPointMake(0.5, 0.5 + offset);
             [imageView mas_makeConstraints:^(SM_MASConstraintMaker *make) {
                 make.top.equalTo(self.mas_topLayoutGuide);
                 make.bottom.equalTo(self.mas_bottomLayoutGuide);
