@@ -122,7 +122,7 @@
             if (index < self.remoteGifts.count) {
                 gift = self.remoteGifts[index];
                 cell.textLabel.textColor = [UIColor blackColor];
-                cell.textLabel.text = [NSString stringWithFormat:@"%@(未下载)", gift.name];
+                cell.textLabel.text = [NSString stringWithFormat:@"%@(未下载/有更新)", gift.name];
             }
         }
 
@@ -199,7 +199,7 @@
                     for (BQGift *gift in gifts) {
                         BOOL hasDownloaded = NO;
                         for (BQGift *lGift in strong.localGifts) {
-                            if ([lGift.guid isEqualToString:gift.guid]) {
+                            if ([lGift.guid isEqualToString:gift.guid] && lGift.lastUpdatedTime == gift.lastUpdatedTime) {
                                 hasDownloaded = YES;
                                 break;
                             }
