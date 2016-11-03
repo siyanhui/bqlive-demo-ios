@@ -173,6 +173,9 @@
         imageView.animatedImage = animatedImage;
     }
 
+    if (animatedImage.isStatic) {
+        [self performSelector:@selector(giftAnimationDidFinish:) withObject:imageView afterDelay:3];
+    }
 
 }
 

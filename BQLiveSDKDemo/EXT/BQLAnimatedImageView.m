@@ -322,7 +322,7 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
 - (void)updateShouldAnimate
 {
     BOOL isVisible = self.window && self.superview && ![self isHidden] && self.alpha > 0.0;
-    self.shouldAnimate = self.animatedImage && isVisible;
+    self.shouldAnimate = self.animatedImage && isVisible && !self.animatedImage.isStatic;
 }
 
 

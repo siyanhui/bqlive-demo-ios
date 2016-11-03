@@ -129,6 +129,7 @@ typedef NS_ENUM(NSUInteger, BMAnimatedImageFrameCacheSize) {
     _requestedFrameIndexes = [[NSMutableIndexSet alloc] init];
 
     _loopCount = 0;
+    _isStatic = config.isStatic;
 
     [self loadGiftResource];
 

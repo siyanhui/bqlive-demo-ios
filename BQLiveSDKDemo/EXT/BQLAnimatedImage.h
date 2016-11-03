@@ -51,6 +51,11 @@ extern const NSTimeInterval kBMAnimatedImageDelayTimeIntervalMinimum;
 @property (nonatomic, assign) NSUInteger loopCount;
 
 /*
+ * 是不是静态图
+ */
+@property (nonatomic, assign) BOOL isStatic;
+
+/*
  * 每一帧的延时数据
  */
 @property (nonatomic, strong, readonly) NSDictionary *delayTimesForIndexes;
