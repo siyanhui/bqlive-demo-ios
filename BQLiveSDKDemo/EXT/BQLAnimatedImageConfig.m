@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSArray<NSString *> *subImageKeys;
 @property (nonatomic, strong) NSMutableDictionary *subImages;
 @property (nonatomic, assign) BOOL isStatic;
+@property (nonatomic, assign) BOOL fullScreen;
 
 @end
 
@@ -53,6 +54,7 @@
         self.width = [[self.dic objectForKey:@"width"] floatValue];
         self.height = [[self.dic objectForKey:@"height"] floatValue];
         self.isStatic = [[self.dic objectForKey:@"static"] boolValue];
+        self.fullScreen = [[self.dic objectForKey:@"full_screen"] boolValue];
         self.subImageKeys = [self.dic objectForKey:@"sub"];
         self.subImages = [[NSMutableDictionary alloc] init];
     }
