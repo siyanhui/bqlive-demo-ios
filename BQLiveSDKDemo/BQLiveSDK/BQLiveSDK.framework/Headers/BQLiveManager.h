@@ -48,8 +48,8 @@
 
 /**
  *  解码礼物动画的资源文件， 转存的路径不可与原文件路径相同
- *  @param path 文件路径
- *  @param toPath 转存的路径
+ *  @param path 文件路径（加密的.zip文件路径）
+ *  @param toPath 转存的路径 （解密后的.zip文件路径）
  */
 + (void)decodeGiftResourceWithPath:(nonnull NSString *)path toPath:(nonnull NSString *)toPath error:( NSError * _Nullable * _Nullable)error;
 
