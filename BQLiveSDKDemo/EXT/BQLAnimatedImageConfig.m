@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSMutableDictionary *subImages;
 @property (nonatomic, assign) BOOL isStatic;
 @property (nonatomic, assign) BOOL fullScreen;
+@property (nonatomic, assign) NSUInteger framePerSecond;
 
 @end
 
@@ -55,6 +56,10 @@
         self.height = [[self.dic objectForKey:@"height"] floatValue];
         self.isStatic = [[self.dic objectForKey:@"static"] boolValue];
         self.fullScreen = [[self.dic objectForKey:@"full_screen"] boolValue];
+        self.framePerSecond = [[self.dic objectForKey:@"fps"] integerValue];
+        if (self.framePerSecond <= 0) {
+            self.framePerSecond = 12;
+        }
         self.subImageKeys = [self.dic objectForKey:@"sub"];
         self.subImages = [[NSMutableDictionary alloc] init];
     }

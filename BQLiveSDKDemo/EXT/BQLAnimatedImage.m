@@ -147,7 +147,7 @@ typedef NS_ENUM(NSUInteger, BMAnimatedImageFrameCacheSize) {
                 [self.cachedFrameIndexes addIndex:self.posterImageFrameIndex];
             }
 
-            NSNumber *delayTime = @0.08;
+            NSNumber *delayTime = [NSNumber numberWithFloat:1.0 / ((float)_giftConfig.framePerSecond)];
             const NSTimeInterval kDelayTimeIntervalDefault = 0.1;
             if ([delayTime floatValue] < ((float)kBMAnimatedImageDelayTimeIntervalMinimum - FLT_EPSILON)) {
                 delayTime = @(kDelayTimeIntervalDefault);
