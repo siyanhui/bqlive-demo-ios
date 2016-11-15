@@ -487,10 +487,11 @@ typedef NS_ENUM(NSUInteger, BMAnimatedImageFrameCacheSize) {
         alignment = kCTTextAlignmentRight;
     }
     
-    const CFIndex kNumberOfSettings = 1;
+    CTLineBreakMode breakMode = kCTLineBreakByClipping;
+    const CFIndex kNumberOfSettings = 2;
     CTParagraphStyleSetting theSettings[kNumberOfSettings] = {
-        {kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &alignment}
-
+        {kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &alignment},
+        {kCTParagraphStyleSpecifierLineBreakMode, sizeof(CTLineBreakMode), &breakMode}
     };
     CTParagraphStyleRef theParagraphRef = CTParagraphStyleCreate(theSettings, kNumberOfSettings);
 
